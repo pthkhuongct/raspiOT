@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>HỆ THỐNG GIÁM SÁT ĐIỆN NĂNG TIÊU THỤ</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('{{ url_for('static', filename='pika.png') }}') no-repeat center center fixed;
+            background-size: cover;
+            color: #39ff14;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+            background: rgba(0, 0, 0, 0.5);  /* Sử dụng màu nền đen với độ mờ */
+            border-radius: 10px;
+            padding: 20px;
+        }
+        h1 {
+            color: #39ff14;
+            text-shadow: 2px 2px 4px #000000;
+            margin-bottom: 40px;
+        }
+        h3 {
+            color: #39ff14;
+            margin-bottom: 20px;
+        }
+        .value-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            transition: transform 0.2s;
+        }
+        .value-container:hover {
+            transform: scale(1.05);
+        }
+        .value {
+            font-size: 2.5em;
+            margin: 10px;
+            color: #39ff14;
+        }
+        .btn {
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background: #39ff14;
+            color: #ffffff;
+            border: none;
+            transition: background 0.5s, transform 0.2s;
+        }
+        .btn:hover {
+            background: #32cd12;
+            transform: scale(1.1);
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+        }
+        .col-md-4 {
+            max-width: 30%;
+            margin: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>HỆ THỐNG GIÁM SÁT ĐIỆN NĂNG TIÊU THỤ</h1>
+        <div class="row">
+            <div class="col-md-4 value-container">
+                <h3>Điện áp đồng hồ 1</h3>
+                <div id="voltage1" class="value">0.0 V</div>
+            </div>
+            <div class="col-md-4 value-container">
+                <h3>Dòng điện đồng hồ 1</h3>
+                <div id="current1" class="value">0.0 A</div>
+            </div>
+            <div class="col-md-4 value-container">
+                <h3>Tổng Kwh đồng hồ 1</h3>
+                <div id="kwh1" class="value">0.0 kWh</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 value-container">
+                <h3>Điện áp đồng hồ 2</h3>
+                <div id="voltage2" class="value">0.0 V</div>
+            </div>
+            <div class="col-md-4 value-container">
+                <h3>Dòng điện đồng hồ 2</h3>
+                <div id="current2" class="value">0.0 A</div>
+            </div>
+            <div class="col-md-4 value-container">
+                <h3>Tổng Kwh đồng hồ 2</h3>
+                <div id="kwh2" class="value">0.0 kWh</div>
+            </div>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-danger mt-3">Đăng xuất</a>
+    </div>
+    <script>
+        setInterval(function() {
+            $.getJSON("/data", function(data) {
+                document.getElementById("voltage1").textContent = parseFloat(data.voltage_db3).toFixed(1) + " V";
+                document.getElementById("voltage2").textContent = parseFloat(data.voltage_db4).toFixed(1) + " V";
+                document.getElementById("current1").textContent = parseFloat(data.current_db3).toFixed(1) + " A";
+                document.getElementById("current2").textContent = parseFloat(data.current_db4).toFixed(1) + " A";
+                document.getElementById("kwh1").textContent = parseFloat(data.kwh_db3).toFixed(1) + " kWh";
+                document.getElementById("kwh2").textContent = parseFloat(data.kwh_db4).toFixed(1) + " kWh";
+            });
+        }, 1000);
+    </script>
+</body>
+</html>
+v
